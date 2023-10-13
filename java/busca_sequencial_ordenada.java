@@ -14,6 +14,9 @@ public class busca_sequencial_ordenada {
         for (int i = 0; i < nums.length; i++) {
             if (nums[i] == key)
                 return i;
+            else
+                if (key < nums[i])
+                    return -1;
         }
         return -1;
     }

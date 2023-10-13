@@ -5,11 +5,14 @@
  *  space: O(n)
  */
 
- const busca_sequencial_ordenada = (nums, key) => {
+const busca_sequencial_ordenada = (nums, key) => {
     nums.sort((a, b) => a - b);
     for (let i = 0; i < nums.length; i++) {
         if (nums[i] == key)
             return i;
+        else
+            if (key < nums[i])
+                return -1;
     }
     return -1;
 };

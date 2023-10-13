@@ -11,6 +11,9 @@ def busca_sequencial(nums: List[int], key: int) -> int:
     for i, num in enumerate(nums):
         if num == key:
             return i
+        else:
+            if key < num:
+                return -1
     return -1
     
 nums = [28, 6, -2, 9, 16, 20, 23, 8]

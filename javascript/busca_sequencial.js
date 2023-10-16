@@ -1,4 +1,6 @@
  /**
+ *  Problema: Busca Sequencial
+ * 
  *  n = number of elements array
  *
  *  time: O(n)

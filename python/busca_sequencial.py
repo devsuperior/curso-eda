@@ -1,5 +1,7 @@
 from typing import List
 
+#   Problema: Busca Sequencial Ordenada
+#
 #   n = number of elements array
 #
 #   time: O(n)

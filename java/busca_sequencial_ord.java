@@ -1,13 +1,15 @@
 import java.util.Arrays;
 
-public class busca_sequencial_ordenada {
+/*
+ *  Problema: Busca Sequencial Ordenada
+ * 
+ *  n = number of elements array
+ * 
+ *  time: O(n)
+ *  space: O(n)
+ */
 
-    /*
-     *  n = number of elements array
-     * 
-     *  time: O(n)
-     *  space: O(n)
-     */
+public class busca_sequencial_ord {
 
     public static int buscaSequencialOrdenada(int[] nums, int key) {
         Arrays.sort(nums);

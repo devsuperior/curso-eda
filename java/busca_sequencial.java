@@ -1,11 +1,13 @@
-public class busca_sequencial {
+/*
+ *  Problema: Busca Sequencial
+ * 
+ *  n = number of elements array
+ * 
+ *  time: O(n)
+ *  space: O(n)
+ */
 
-    /*
-     *  n = number of elements array
-     * 
-     *  time: O(n)
-     *  space: O(n)
-     */
+public class busca_sequencial {
 
     public static int buscaSequencial(int[] nums, int key) {
         for (int i = 0; i < nums.length; i++) {

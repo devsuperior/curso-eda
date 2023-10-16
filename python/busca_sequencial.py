@@ -1,6 +1,6 @@
 from typing import List
 
-#   Problema: Busca Sequencial Ordenada
+#   Problema: Busca Sequencial
 #
 #   n = number of elements array
 #

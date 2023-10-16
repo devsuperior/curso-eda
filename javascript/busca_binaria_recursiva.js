@@ -3,8 +3,8 @@
  * 
  *  n = number of elements array
  *
- *  time: O(n)
- *  space: O(n)
+ *  time: O(log n)
+ *  space: O(1)
  */
 
 const busca_binaria_recursiva = function(nums, key, low, high) {

@@ -30,5 +30,6 @@ const swap = (nums, a, b) => {
     nums[b] = aux;
 };
 
-console.log(bubble_sort([23, 4, 67, -8, 21]));
+console.log(bubble_sort([20, 9, 86, -2, 16]));
 console.log(bubble_sort([5, 4, 3, 2, 1]));
+console.log(bubble_sort([-5, 0, 2, 8, 13, 16, 19, 23, 29, 34, 38]));

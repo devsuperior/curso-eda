@@ -34,7 +34,7 @@ public class bubble_sort {
     }
 
     public static void main(String[] args) {
-        int[] nums = {23, 4, 67, -8, 21};
+        int[] nums = {20, 9, 86, -2, 16};
         for (int num : bubbleSort(nums)) System.out.print(num + " ");
         System.out.println();
 

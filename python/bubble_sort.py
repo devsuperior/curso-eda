@@ -22,7 +22,7 @@ def bubble_sort(nums: List[int]) -> int:
 
     return nums
 
-nums = [23, 4, 67, -8, 21]
+nums = [20, 9, 86, -2, 16]
 print(bubble_sort(nums))
 
 nums = [-5, 0, 2, 8, 13, 16, 19, 23, 29, 34, 38]

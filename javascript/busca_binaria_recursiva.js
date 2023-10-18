@@ -7,7 +7,7 @@
  *  space: O(1)
  */
 
-const busca_binaria_recursiva = function(nums, key, low, high) {
+const busca_binaria_recursiva = (nums, key, low, high) => {
 
     if (low > high) {
         return -1;

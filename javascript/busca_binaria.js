@@ -7,7 +7,7 @@
  *  space: O(1)
  */
 
-const busca_binaria = function(nums, key) {
+const busca_binaria = (nums, key) => {
     let low = 0;
     let middle;
     let high = nums.length - 1;

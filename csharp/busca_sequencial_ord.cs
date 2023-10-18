@@ -11,7 +11,7 @@ using System;
 
 public class busca_seq_ordenada
 {
-    public static int buscaSequencialOrdenada(int[] nums, int key) {
+    public static int BuscaSequencialOrdenada(int[] nums, int key) {
         Array.Sort(nums);
         for (int i = 0; i < nums.Length; i++) {
             if (nums[i] == key)
@@ -23,11 +23,11 @@ public class busca_seq_ordenada
         return -1;
     }
     
-    public static void Main(string[] args)
+    public static void Main()
     {
         int[] nums = {28, 6, -2, 9, 16, 20, 23, 8};
         int key = 20;
-        int result = buscaSequencialOrdenada(nums, key);
+        int result = BuscaSequencialOrdenada(nums, key);
         
         if (result > -1) {
             Console.WriteLine("Elemento encontrado na posicao " + result);

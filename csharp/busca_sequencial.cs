@@ -11,7 +11,7 @@ using System;
 
 public class busca_sequencial
 {
-    public static int buscaSequencial(int[] nums, int key) {
+    public static int BuscaSequencial(int[] nums, int key) {
         for (int i = 0; i < nums.Length; i++) {
             if (nums[i] == key)
                 return i;
@@ -19,11 +19,11 @@ public class busca_sequencial
         return -1;
     }
     
-    public static void Main(string[] args)
+    public static void Main()
     {
         int[] nums = {28, 6, -2, 9, 16, 20, 23, 8};
         int key = 20;
-        int result = buscaSequencial(nums, key);
+        int result = BuscaSequencial(nums, key);
         
         if (result > -1) {
             Console.WriteLine("Elemento encontrado na posicao " + result);

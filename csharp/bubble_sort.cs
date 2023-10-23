@@ -41,7 +41,7 @@ public class bubble_sort {
 
         int[] nums1 = {-5, 0, 2, 8, 13, 16, 19, 23, 29, 34, 38};
         nums1 = BubbleSort(nums1);
-        foreach (int num in BubbleSort(nums1)) Console.Write(num1 + " ");
+        foreach (int num in BubbleSort(nums1)) Console.Write(num + " ");
     }
 
 

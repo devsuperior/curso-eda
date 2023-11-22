@@ -13,8 +13,19 @@ class LinkedList {
         this.size = 0;
     }
 
+    // clear = () => {
+    //     this.head = null;
+    //     this.size = 0;
+    // };
+
     clear = () => {
-        this.head = null;
+        let aux = this.head;
+        while (aux != null) {
+            aux = aux.next;
+            this.head.value = null;
+            this.head.next = null;
+            this.head = aux;
+        }
         this.size = 0;
     };
 
@@ -233,6 +244,14 @@ linkedList.printLinkedList();
 // console.log("Tamanho da lista:", linkedList.getSize());
 
 console.log("removendo o elemento 2:", linkedList.remove(16));
+console.log("Lista atual: ");
+linkedList.printLinkedList();
+
+console.log("Tamanho da lista:", linkedList.getSize());
+
+console.log("Removendo todos os elementos");
+linkedList.clear();
+
 console.log("Lista atual: ");
 linkedList.printLinkedList();
 

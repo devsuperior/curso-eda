@@ -13,6 +13,10 @@ public class LinkedList<T> {
         this.size = 0;
     }
 
+    public Node<T> getHead() {
+        return this.head;
+    }
+
     public boolean isEmpty() {
         if (this.head == null)
             return true;

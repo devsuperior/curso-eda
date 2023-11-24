@@ -11,6 +11,10 @@ namespace Lists.LinkedList {
             this.size = 0;
         }
 
+        public Node<T> GetHead() {
+            return this.head;
+        }
+
         public bool IsEmpty() {
             return head == null;
         }

@@ -12,17 +12,17 @@ class LinkedList:
         self.head = None
         self.size = 0
 
-    def isEmpty(self):
+    def is_empty(self):
         if self.head == None:
             return True
         return False
     
-    def getSize(self):
+    def get_size(self):
         return self.size
     
-    def addAtStart(self, elem):
+    def add_at_start(self, elem):
         node = Node(elem)
-        if self.isEmpty():
+        if self.is_empty():
             self.head = node
             self.size += 1
             return
@@ -31,7 +31,7 @@ class LinkedList:
         node.next = aux
         self.size += 1
 
-    def addAtEnd(self, elem):
+    def add_at_end(self, elem):
         node = Node(elem)
         if self.head == None:
             self.head = node
@@ -43,27 +43,27 @@ class LinkedList:
         current.next = node
         self.size += 1
 
-    def addAtPosition(self, index, elem):
+    def add_at_position(self, index, elem):
         if index == 0:
-            self.addAtStart(elem)
+            self.add_at_start(elem)
             return
         if not self.get(index):
-            self.addAtEnd(elem)
+            self.add_at_end(elem)
             return
         node = Node(elem)
-        aux = self.getNode(index - 1)
+        aux = self.get_node(index - 1)
         node.next = aux.next
         aux.next = node
         self.size += 1
         
     def get(self, index):
-        current = self.getNode(index)
+        current = self.get_node(index)
         if current:
             return current.value
         return None
 
-    def getNode(self, index):
-        if index < 0 or index > self.getSize():
+    def get_node(self, index):
+        if index < 0 or index > self.get_size():
             return None
         current = self.head
         i = 0
@@ -75,12 +75,12 @@ class LinkedList:
         return None
     
     def contains(self, elem):
-        indexElem = self.indexOf(elem)
+        indexElem = self.index_of(elem)
         if indexElem != -1:
             return True
         return False
     
-    def indexOf(self, elem):
+    def index_of(self, elem):
         current = self.head
         i = 0
         while current:
@@ -90,8 +90,8 @@ class LinkedList:
             i += 1
         return -1
     
-    def removeAtPosition(self, index):
-        if self.isEmpty() or not self.getNode(index):
+    def remove_at_position(self, index):
+        if self.is_empty() or not self.get_node(index):
             return None
 
         item = None
@@ -102,47 +102,60 @@ class LinkedList:
             self.size -= 1
             return item
 
-        if index == self.getSize() - 1:
+        if index == self.get_size() - 1:
             item = self.get(index)
-            aux = self.getNode(index - 1)
+            aux = self.get_node(index - 1)
             aux.next = None
             self.size -= 1
             return item
 
-        aux = self.getNode(index - 1)
+        aux = self.get_node(index - 1)
         item = aux.next.value
         aux.next = aux.next.next
         self.size -= 1
         return item
     
     def remove(self, elem):
-        index = self.indexOf(elem)
-        if self.isEmpty() or index == -1:
+        index = self.index_of(elem)
+        if self.is_empty() or index == -1:
             return False
-        self.removeAtPosition(index)
+        self.remove_at_position(index)
         return True
     
-    def toArray(self):
+    def to_array(self):
         current = self.head
         vect = []
         while current:
             vect.append(current.value)
             current = current.next
         return vect
-        
-# list = LinkedList()
-# list.addAtStart(10)
-# list.addAtStart(20)
-# list.addAtEnd(30)
-# list.addAtEnd(40)
-# list.addAtPosition(1, 50)
+    
+    def __str__(self):
+        if self.is_empty():
+            return "[]"
+        builder = ["[\n"]
+        current = self.head
+        while current.next:
+            builder.append(f"{current.value},\n")
+            current = current.next
+        builder.append(f"{current.value}\n]")
 
-# print(list.toArray())
+        return "".join(builder)
+
+# Exemple:     
+# list = LinkedList()
+# list.add_at_start(10)
+# list.add_at_start(20)
+# list.add_at_end(30)
+# list.add_at_end(40)
+# list.add_at_position(1, 50)
+
+# print(list.to_array())
 
 # list.remove(30)
 # list.remove(100)
-# list.removeAtPosition(2)
-# list.removeAtPosition(-1)
+# list.remove_at_position(2)
+# list.remove_at_position(-1)
 
-# print(list.toArray())
+# print(list.to_array())
 

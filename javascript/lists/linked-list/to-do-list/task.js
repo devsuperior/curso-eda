@@ -40,6 +40,6 @@ export class Task {
     };
     
     toString() {
-        return `Task: ${this.description} | Tag: ${this.tag} | Status: ${this.status}`;
-    }
+        return `Task ${this.id}: ${this.description} | Tag: ${this.tag} | Status: ${this.status}`;
+    };
 }

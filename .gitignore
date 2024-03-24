@@ -387,3 +387,5 @@ bin/
 
 *.exe
 *.o
+
+.idea

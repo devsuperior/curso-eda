@@ -1,7 +1,7 @@
 import java.util.Arrays;
 
-class Solution {
-    public int findContentChildren(int[] g, int[] s) {
+class Cookies {
+    public static int findContentChildren(int[] g, int[] s) {
         Arrays.sort(g);
         Arrays.sort(s);
 

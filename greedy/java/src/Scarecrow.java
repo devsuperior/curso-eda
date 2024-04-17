@@ -1,5 +1,5 @@
-public class Solution {
-    int minimumScarecrows(int n, String field) {
+public class Scarecrow {
+    public static int minimumScarecrows(int n, String field) {
         int ans = 0;
         for(int i = 0; i < n; i++){
             if(field.charAt(i) == '.'){

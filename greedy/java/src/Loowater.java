@@ -1,5 +1,7 @@
-public class Solution {
-    public int minimumCoins(int n, int[] heads, int m, int[] knights) {
+import java.util.Arrays;
+
+public class Loowater {
+    public static int minimumCoins(int n, int[] heads, int m, int[] knights) {
         Arrays.sort(heads);
         Arrays.sort(knights);
 

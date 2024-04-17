@@ -1,5 +1,5 @@
-class Solution{
-    static String findLargest(int N, int S){
+class LargestNumberPossible {
+    public static String findLargest(int N, int S){
         String ans = "";
         
         // if we put the maximum digits we still can't make S

@@ -1,7 +1,7 @@
 import java.util.Arrays;
 
-class Solution {
-    public int numRescueBoats(int[] people, int limit) {
+class Boats {
+    public static int numRescueBoats(int[] people, int limit) {
         int l = 0, r = people.length - 1;
 
         Arrays.sort(people);

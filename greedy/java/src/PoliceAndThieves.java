@@ -1,8 +1,8 @@
 import java.util.ArrayList;
 import java.util.List;
 
-public class Solution {
-    public int catchThieves(char[] arr, int n, int k) {
+public class PoliceAndThieves {
+    public static int catchThieves(char[] arr, int n, int k) {
         List<Integer> thievesIndex = new ArrayList<>();
         List<Integer> policeIndex = new ArrayList<>();
         

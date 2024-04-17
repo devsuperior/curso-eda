@@ -1,7 +1,7 @@
 import java.util.Arrays;
 
-class Solution {
-    public int minimumRooms(int[] start, int[] end, int n) {
+class MinimumRooms {
+    public static int minimumRooms(int[] start, int[] end, int n) {
         Arrays.sort(start);
         Arrays.sort(end);
 

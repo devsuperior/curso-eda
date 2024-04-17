@@ -1,7 +1,7 @@
 import java.util.HashMap;
 
-class Solution {
-    public boolean lemonadeChange(int[] bills) {
+class Lemonade {
+    public static boolean lemonadeChange(int[] bills) {
         HashMap<Integer, Integer> myBills = new HashMap<>();
         myBills.put(5, 0);
         myBills.put(10, 0);

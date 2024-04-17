@@ -1,5 +1,7 @@
-public class Solution {
-    public int maximumBottles(int n, int x, int[] v) {
+import java.util.Arrays;
+
+public class GarrafasOasis {
+    public static int maximumBottles(int n, int x, int[] v) {
         Arrays.sort(v);
 
         int ans = 0;

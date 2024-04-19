@@ -1,6 +1,20 @@
 import java.util.HashMap;
 
 class Lemonade {
+	public static void main(String[] args) {
+		// Caso 1
+		if(lemonadeChange(new int[] {5, 5, 5, 10, 20}) == true)
+			System.out.println("Verdadeiro");
+		else
+			System.out.println("Falso");
+		
+		// Caso 2
+		if(lemonadeChange(new int[] {5, 5, 10, 10, 20}) == true)
+			System.out.println("Verdadeiro");
+		else
+			System.out.println("Falso");
+	}
+	
     public static boolean lemonadeChange(int[] bills) {
         HashMap<Integer, Integer> myBills = new HashMap<>();
         myBills.put(5, 0);

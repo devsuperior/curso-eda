@@ -2,6 +2,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PoliceAndThieves {
+	public static void main(String[] args) {
+		System.out.println(catchThieves(new char[] {'P', 'T', 'T', 'P', 'T'}, 5, 1));
+		System.out.println(catchThieves(new char[] {'T', 'T', 'P', 'P', 'T', 'P'}, 6, 2));
+	}
+	
     public static int catchThieves(char[] arr, int n, int k) {
         List<Integer> thievesIndex = new ArrayList<>();
         List<Integer> policeIndex = new ArrayList<>();

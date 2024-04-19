@@ -1,4 +1,10 @@
 class LargestNumberPossible {
+	public static void main(String[] args) {
+		System.out.println(findLargest(2, 9));
+		System.out.println(findLargest(3, 20));
+		System.out.println(findLargest(4, 0));
+	}
+	
     public static String findLargest(int N, int S){
         String ans = "";
         

@@ -26,3 +26,6 @@ var findContentChildren = function(g, s) {
 
     return ans;
 };
+
+console.log(findContentChildren([1, 2, 3], [1, 1]))
+console.log(findContentChildren([1, 2], [2, 3, 1]))

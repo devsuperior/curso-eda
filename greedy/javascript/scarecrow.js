@@ -13,3 +13,7 @@ var minimumScarecrows = function(n, field) {
     }
     return ans;
 }
+
+console.log(minimumScarecrows(3, '.#.'))
+console.log(minimumScarecrows(11, '...##....##'))
+console.log(minimumScarecrows(2, '##'))

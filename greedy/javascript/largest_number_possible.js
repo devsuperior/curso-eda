@@ -32,3 +32,7 @@ var findLargest = function(N,S){
     
     return ans;
 }
+
+console.log(findLargest(2, 9))
+console.log(findLargest(3, 20))
+console.log(findLargest(4, 0))

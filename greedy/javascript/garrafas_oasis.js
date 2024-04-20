@@ -19,3 +19,6 @@ var minimumBottles = function(n, x, bottles) {
     }
     return ans;
 };
+
+console.log(minimumBottles(5, 10, [8, 5, 4, 3, 2]))
+console.log(minimumBottles(3, 10, [6, 3, 2]))

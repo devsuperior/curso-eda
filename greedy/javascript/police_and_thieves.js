@@ -36,3 +36,6 @@ var catchThieves = function(arr, n, k)
     
     return ans;
 }
+
+console.log(catchThieves(['P', 'T', 'T', 'P', 'T'], 5, 1))
+console.log(catchThieves(['T', 'T', 'P', 'P', 'T', 'P'], 6, 2))

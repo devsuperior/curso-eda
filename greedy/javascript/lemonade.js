@@ -28,3 +28,13 @@ var lemonadeChange = function(bills) {
     // Se foi possível dar o troco em todos os casos, retorna true
     return true;
 };
+
+if(lemonadeChange([5, 5, 5, 10, 20]))
+    console.log("Verdadeiro")
+else
+    console.log("Falso")
+
+if(lemonadeChange([5, 5, 10, 10, 20]))
+    console.log("Verdadeiro")
+else
+    console.log("Falso")

@@ -3,7 +3,12 @@ using System.Collections.Generic;
 
 class Program
 {
-    public int FindContentChildren(List<int> g, List<int> s)
+    public static void Main(string[] args)
+    {
+        Console.WriteLine(FindContentChildren(new List<int>{1, 2, 3}, new List<int>{1, 1}));
+        Console.WriteLine(FindContentChildren(new List<int>{1, 2}, new List<int>{2, 3, 1}));
+    }
+    public static int FindContentChildren(List<int> g, List<int> s)
     {
         g.Sort();
         s.Sort();

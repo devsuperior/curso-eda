@@ -2,7 +2,13 @@
 
 public class Program
 {
-    public int NumRescueBoats(int[] people, int limit)
+    public static void Main(string[] args)
+    {
+        Console.WriteLine(NumRescueBoats(new int[]{1, 2}, 3));
+        Console.WriteLine(NumRescueBoats(new int[]{3, 2, 2, 1}, 3));
+        Console.WriteLine(NumRescueBoats(new int[]{3, 5, 3, 4}, 5));
+    }
+    public static int NumRescueBoats(int[] people, int limit)
     {
         int l = 0, r = people.Length - 1;
 

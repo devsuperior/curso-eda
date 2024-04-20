@@ -1,6 +1,11 @@
 ﻿class Program
 {
-    public int catchThieves(char[] arr, int n, int k)
+    public static void Main(string[] args)
+    {
+        Console.WriteLine(catchThieves(new char[]{'P', 'T', 'T', 'P', 'T'}, 5, 1));
+        Console.WriteLine(catchThieves(new char[]{'T', 'T', 'P', 'P', 'T', 'P'}, 6, 2));
+    }
+    public static int catchThieves(char[] arr, int n, int k)
     {
         List<int> thievesIndex = new List<int>();
         List<int> policeIndex = new List<int>();

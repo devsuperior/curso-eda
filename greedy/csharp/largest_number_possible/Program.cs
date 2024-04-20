@@ -1,6 +1,12 @@
 ﻿class Program
 {
-    public string findLargest(int N, int S)
+    public static void Main(string[] args)
+    {
+        Console.WriteLine(findLargest(2, 9));
+        Console.WriteLine(findLargest(3, 20));
+        Console.WriteLine(findLargest(4, 0));
+    }
+    public static string findLargest(int N, int S)
     {
         string ans = "";
 

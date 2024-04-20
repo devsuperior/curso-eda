@@ -1,6 +1,18 @@
 ﻿public class Program
 {
-    public bool LemonadeChange(int[] bills)
+    public static void Main(string[] args)
+    {
+        if(LemonadeChange(new int[]{5, 5, 5, 10, 20}) == true)
+            Console.WriteLine("Verdadeiro");
+        else
+            Console.WriteLine("Falso");
+
+        if(LemonadeChange(new int[]{5, 5, 10, 10, 20}) == true)
+            Console.WriteLine("Verdadeiro");
+        else
+            Console.WriteLine("Falso");
+    }
+    public static bool LemonadeChange(int[] bills)
     {
         // Maps the count of each bill value we have
         Dictionary<int, int> myBills = new Dictionary<int, int> {

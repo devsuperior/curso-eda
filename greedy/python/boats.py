@@ -1,5 +1,5 @@
 class Solution:
-    def numRescueBoats(self, people: List[int], limit: int) -> int:
+    def numRescueBoats(self, people, limit):
         people.sort()
         l, r = 0, len(people) - 1
 
@@ -17,3 +17,8 @@ class Solution:
             boats += 1
 
         return boats
+    
+s = Solution()
+print(s.numRescueBoats([1, 2], 3))
+print(s.numRescueBoats([3, 2, 2, 1], 3))
+print(s.numRescueBoats([3, 5, 3, 4], 5))

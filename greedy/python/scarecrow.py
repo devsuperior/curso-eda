@@ -9,3 +9,8 @@ class Solution:
             else:
                 i += 1
         return ans
+    
+s = Solution()
+print(s.minimumScarecrows(3, '.#.'))
+print(s.minimumScarecrows(11, '...##....##'))
+print(s.minimumScarecrows(2, '##'))

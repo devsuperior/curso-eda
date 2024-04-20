@@ -11,3 +11,7 @@ class Solution:
             else:
                 break
         return ans
+    
+s = Solution()
+print(s.maximumBottles(5, 10, [8, 5, 4, 3, 2]))
+print(s.maximumBottles(3, 10, [6, 3, 2]))

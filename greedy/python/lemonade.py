@@ -1,5 +1,5 @@
 class Solution:
-    def lemonadeChange(self, bills: List[int]) -> bool:
+    def lemonadeChange(self, bills):
         # Mapeia a quantidade de cédulas de cada valor que temos
         my_bills = {5: 0, 10: 0, 20: 0}
 
@@ -18,3 +18,14 @@ class Solution:
                 return False
 
         return True
+    
+s = Solution()
+if s.lemonadeChange([5, 5, 5, 10, 10]):
+    print('Verdadeiro')
+else:
+    print('Falso')
+
+if s.lemonadeChange([5, 5, 10, 10, 10]):
+    print('Verdadeiro')
+else:
+    print('Falso')

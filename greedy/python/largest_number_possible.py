@@ -22,3 +22,8 @@ class Solution:
             ans += '0'
 
         return ans
+    
+s = Solution()
+print(s.findLargest(2, 9))
+print(s.findLargest(3, 20))
+print(s.findLargest(4, 0))

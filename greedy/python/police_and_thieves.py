@@ -27,3 +27,7 @@ class Solution:
                 p += 1
         
         return ans
+    
+s = Solution()
+print(s.catchThieves(['P', 'T', 'T', 'P', 'T'], 5, 1))
+print(s.catchThieves(['T', 'T', 'P', 'P', 'T', 'P'], 6, 2))

@@ -1,5 +1,5 @@
 class Solution:
-    def findContentChildren(self, g: List[int], s: List[int]) -> int:
+    def findContentChildren(self, g, s):
         g.sort()
         s.sort()
 
@@ -17,3 +17,7 @@ class Solution:
                 j += 1
 
         return ans
+    
+s = Solution()
+print(s.findContentChildren([1, 2, 3], [1, 1]))
+print(s.findContentChildren([1, 2], [2, 3, 1]))

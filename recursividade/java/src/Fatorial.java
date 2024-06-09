@@ -1,4 +1,4 @@
-package aula;
+
 
 public class Fatorial {
 

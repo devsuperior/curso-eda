@@ -16,7 +16,7 @@ public class Reverse {
         }
         
         T head = list.get(0);
-        List<T> tail = new ArrayList<>(list.subList(1, list.size()));
+        List<T> tail = list.subList(1, list.size());
         
         List<T> newList = reverse(tail);
         newList.add(head);

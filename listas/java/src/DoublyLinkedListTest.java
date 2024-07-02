@@ -1,4 +1,4 @@
-public class TesteListaDuplamenteEncadeada {
+public class DoublyLinkedListTest {
 
 	public static void main(String[] args) {
 

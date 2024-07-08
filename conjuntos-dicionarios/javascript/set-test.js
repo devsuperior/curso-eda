@@ -24,8 +24,11 @@ console.log("Conjunto A está vazio?", A.size === 0);
 console.log("Tamanho do conjunto A:", A.size);
 
 // Operações de união, interseção e diferença usando métodos de Set
-let C = new Set([...A, ...B]); // União
-console.log("União dos conjuntos A e B (Conjunto C):", C);
+let C1 = new Set([...A, ...B]); // União
+let C2 = new Set(A);
+B.forEach(item => C2.add(item));
+console.log("União dos conjuntos A e B (Conjunto C1):", C1);
+console.log("União dos conjuntos A e B (Conjunto C2):", C2);
 
 C = new Set([...A].filter(x => B.has(x))); // Interseção
 console.log("Interseção dos conjuntos A e B (Conjunto C):", C);

@@ -1,10 +1,20 @@
 ﻿public class Transacoes
 {
-    public static void Main(string[] args)
+    public class Transaction
     {
-        Console.WriteLine("[" + string.Join(", ", InvalidTransactions(new string[] { "alice,20,800,mtv", "alice,50,100,beijing" })) + "]");
-        Console.WriteLine("[" + string.Join(", ", InvalidTransactions(new string[] { "alice,20,800,mtv", "alice,50,1200,mtv" })) + "]");
-        Console.WriteLine("[" + string.Join(", ", InvalidTransactions(new string[] { "alice,20,800,mtv", "bob,50,1200,mtv" })) + "]");
+        public string Name;
+        public int Time;
+        public int Money;
+        public string City;
+
+        public Transaction(string csv)
+        {
+            string[] parts = csv.Split(',');
+            Name = parts[0];
+            Time = int.Parse(parts[1]);
+            Money = int.Parse(parts[2]);
+            City = parts[3];
+        }
     }
 
     public static List<string> InvalidTransactions(string[] transactions)
@@ -14,18 +24,18 @@
 
         for (int i = 0; i < transactions.Length; i++)
         {
-            var ti = ParseTransaction(transactions[i]);
+            var ti = new Transaction(transactions[i]);
 
-            if (ti.money > 1000)
+            if (ti.Money > 1000)
             {
                 invalidArray[i] = true;
             }
 
             for (int j = i + 1; j < transactions.Length; j++)
             {
-                var tj = ParseTransaction(transactions[j]);
+                var tj = new Transaction(transactions[j]);
 
-                if (ti.name == tj.name && Math.Abs(ti.time - tj.time) <= 60 && ti.city != tj.city)
+                if (ti.Name == tj.Name && Math.Abs(ti.Time - tj.Time) <= 60 && ti.City != tj.City)
                 {
                     invalidArray[i] = true;
                     invalidArray[j] = true;
@@ -42,16 +52,13 @@
         }
 
         return result;
-
-        (string name, int time, int money, string city) ParseTransaction(string csv)
-        {
-            var parts = csv.Split(',');
-            return (
-                parts[0],
-                int.Parse(parts[1]),
-                int.Parse(parts[2]),
-                parts[3]
-            );
-        }
     }
+
+    public static void Main(string[] args)
+    {
+        Console.WriteLine("[" + string.Join(", ", InvalidTransactions(new string[] { "alice,20,800,mtv", "alice,50,100,beijing" })) + "]");
+        Console.WriteLine("[" + string.Join(", ", InvalidTransactions(new string[] { "alice,20,800,mtv", "alice,50,1200,mtv" })) + "]");
+        Console.WriteLine("[" + string.Join(", ", InvalidTransactions(new string[] { "alice,20,800,mtv", "bob,50,1200,mtv" })) + "]");
+    }
+
 }

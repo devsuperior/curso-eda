@@ -1,16 +1,16 @@
 function twoSum(nums, target) {
-    const dict = {};
+    const dict = new Map();
     let result = [0, 0];
 
     for (let i = 0; i < nums.length; i++) {
         let remainder = target - nums[i];
-        if (remainder in dict) {
-            let index = dict[remainder];
+        if (dict.has(remainder)) {
+            let index = dict.get(remainder);
             result[0] = index;
             result[1] = i;
             return result;
         }
-        dict[nums[i]] = i;
+        dict.set(nums[i], i);
     }
 
     return result;

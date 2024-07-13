@@ -11,20 +11,20 @@ function normalize(text) {
 }
 
 function wordCount(text) {
-  const dict = {};
+  const dict = new Map();
   const words = normalize(text).split(" ");
 
   for (let word of words) {
-    if (!dict.hasOwnProperty(word)) {
-      dict[word] = 1;
+    if (!dict.has(word)) {
+      dict.set(word, 1);
     } else {
-      dict[word] += 1;
+      dict.set(word, dict.get(word) + 1);
     }
   }
 
   const ranks = [];
-  for (let word in dict) {
-    ranks.push(new Rank(word, dict[word]));
+  for (let [word, count] of dict) {
+    ranks.push(new Rank(word, count));
   }
 
   ranks.sort((a, b) => {

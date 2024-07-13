@@ -1,19 +1,19 @@
 function counting(votes) {
-  const dict = {};
+  const dict = new Map();
 
   votes.forEach(s => {
       const [name, count] = s.split(",");
       const countInt = parseInt(count, 10);
-      if (!dict.hasOwnProperty(name)) {
-        dict[name] = countInt;
+      if (!dict.has(name)) {
+        dict.set(name, countInt);
       }
       else {
-        dict[name] += countInt;
+        dict.set(name, dict.get(name) + countInt);
       }
   });
 
   const result = [];
-  for (const [key, value] of Object.entries(dict)) {
+  for (const [key, value] of dict) {
       result.push(`${key},${value}`);
   }
 

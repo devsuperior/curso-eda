@@ -6,15 +6,15 @@ function timeRequiredToBuy(tickets, k) {
         queue.push(i);
     }
 
-    let result = 0;
+    let time = 0;
     while (true) {
         let i = queue.shift();
         tickets[i]--;
-        result++;
+        time++;
         if (tickets[i] > 0) {
             queue.push(i);
         } else if (i === k) {
-            return result;
+            return time;
         }
     }
 }

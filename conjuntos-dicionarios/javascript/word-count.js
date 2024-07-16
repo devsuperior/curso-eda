@@ -5,11 +5,6 @@ class Rank {
   }
 }
 
-function normalize(text) {
-  const noPunctuation = text.replace(/[^\w\s]|_/g, " ");
-  return noPunctuation.replace(/\s+/g, " ").trim().toLowerCase();
-}
-
 function wordCount(text) {
   const dict = new Map();
   const words = normalize(text).split(" ");
@@ -38,10 +33,15 @@ function wordCount(text) {
   return ranks;
 }
 
+function normalize(text) {
+  const words = text.replace(/[^\p{L}\p{N}\s]/gu, " ");
+  return words.replace(/\s+/g, " ").trim().toLowerCase();
+}
+
 const inputText = `
-      O vento sussurra sons entre as árvores, sons que fazem animais 
-      correrem. A floresta e a natureza vibram com segredos e sons.
-  `;
+  O vento sussurra sons entre as árvores, sons que fazem animais 
+  correrem. A floresta e a natureza vibram com segredos e sons.
+`;
 
 const result = wordCount(inputText);
 result.forEach((obj) => {

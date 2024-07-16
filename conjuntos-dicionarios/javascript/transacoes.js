@@ -2,8 +2,8 @@ function invalidTransactions(transactions) {
   function Transaction(csv) {
     const parts = csv.split(",");
     this.name = parts[0];
-    this.time = parseInt(parts[1], 10);
-    this.money = parseInt(parts[2], 10);
+    this.time = Number(parts[1]);
+    this.money = Number(parts[2]);
     this.city = parts[3];
     this.csv = csv;
   }

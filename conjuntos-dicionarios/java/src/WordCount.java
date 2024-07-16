@@ -1,7 +1,11 @@
+import java.text.Collator;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 class Rank {
 	public String word;
@@ -16,8 +20,10 @@ class Rank {
 public class WordCount {
 
 	public static String normalize(String text) {
-		String noPunctuation = text.replaceAll("[\\p{Punct}]", " ");
-		return noPunctuation.replaceAll("\\s+", " ").trim().toLowerCase();
+		Pattern pattern = Pattern.compile("[^\\p{L}\\p{N}\\s]", Pattern.UNICODE_CHARACTER_CLASS);
+		Matcher matcher = pattern.matcher(text);
+		String words = matcher.replaceAll(" ");
+		return words.replaceAll("\\s+", " ").trim().toLowerCase();
 	}
 
 	public static List<Rank> wordCount(String text) {
@@ -40,22 +46,24 @@ public class WordCount {
 		}
 
 		ranks.sort((a, b) -> {
+			Collator collator = Collator.getInstance(Locale.getDefault());
 			int countComparison = b.count.compareTo(a.count);
-            if (countComparison != 0) {
-                return countComparison;
-            }
-            return a.word.compareTo(b.word);
+			if (countComparison != 0) {
+				return countComparison;
+			}
+			return collator.compare(a.word, b.word);
 		});
 
 		return ranks;
 	}
 
 	public static void main(String[] args) {
-		String inputText = """
-			O vento sussurra sons entre as árvores, sons que fazem animais 
-			correrem. A floresta e a natureza vibram com segredos e sons.
-			""";
 		
+		String inputText = """
+				O vento sussurra sons entre as árvores, sons que fazem animais
+				correrem. A floresta e a natureza vibram com segredos e sons.
+				""";
+
 		List<Rank> result = wordCount(inputText);
 		for (Rank obj : result) {
 			System.out.println(obj.word + ": " + obj.count);

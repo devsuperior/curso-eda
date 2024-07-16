@@ -1,3 +1,11 @@
+import re
+import locale
+from functools import cmp_to_key
+
+
+locale.setlocale(locale.LC_ALL, '')
+
+
 class Rank:
     def __init__(self, word, count):
         self.word = word
@@ -5,9 +13,8 @@ class Rank:
 
 
 def normalize(text):
-    import re
-    no_punctuation = re.sub(r'[^\w\s]', ' ', text)
-    return re.sub(r'\s+', ' ', no_punctuation).strip().lower()
+    words = re.sub(r'[^\w\s]', ' ', text, flags=re.UNICODE)
+    return re.sub(r'\s+', ' ', words).strip().lower()
 
 
 def word_count(text):
@@ -19,7 +26,7 @@ def word_count(text):
         dictionary[word] += 1
 
     ranks = [Rank(word, count) for word, count in dictionary.items()]
-    ranks.sort(key=lambda x: (-x.count, x.word))
+    ranks.sort(key=cmp_to_key(lambda a, b: (b.count - a.count) if b.count != a.count else locale.strcoll(a.word, b.word)))
 
     return ranks
 

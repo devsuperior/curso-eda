@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 
 public class Rank
 {
@@ -17,10 +14,10 @@ public class Rank
 
 public class Program
 {
-    public static string Normalize(string text)
+    static string Normalize(string text)
     {
-        string noPunctuation = Regex.Replace(text, "\\p{P}", " ");
-        return Regex.Replace(noPunctuation, "\\s+", " ").Trim().ToLower();
+        string words = Regex.Replace(text, "[^\\p{L}\\p{N}\\s]", "", RegexOptions.Compiled);
+        return Regex.Replace(words, "\\s+", " ").Trim().ToLower();
     }
 
     public static List<Rank> WordCount(string text)
@@ -62,6 +59,13 @@ public class Program
 
     public static void Main(string[] args)
     {
+        List<Rank> words = new List<Rank> { new Rank("árvores", 1), new Rank("animais", 1), new Rank("asno", 1) };
+        words.Sort((a, b) => a.Word.CompareTo(b.Word));
+        foreach (Rank s in words)
+        {
+            Console.WriteLine(s.Word);
+        }
+
         string inputText = @"
             O vento sussurra sons entre as árvores, sons que fazem animais 
             correrem. A floresta e a natureza vibram com segredos e sons.

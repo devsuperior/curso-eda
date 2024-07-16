@@ -3,7 +3,7 @@ function counting(votes) {
 
   votes.forEach(s => {
       const [name, count] = s.split(",");
-      const countInt = parseInt(count, 10);
+      const countInt = Number(count);
       if (!dict.has(name)) {
         dict.set(name, countInt);
       }

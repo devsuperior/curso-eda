@@ -7,9 +7,19 @@ import java.util.List;
 public class BinarySearchTreeSet<K extends Comparable<K>> {
 	
     private final Node SENTINEL = new Node(null);
-    private int size = 0;
-    private Node root = SENTINEL;
+    private int size;
+    private Node root;
 
+    public BinarySearchTreeSet() {
+    	size = 0;
+    	root = SENTINEL;
+    }
+    
+    public BinarySearchTreeSet(Collection<K> c) {
+    	this();
+    	addAll(c);
+    }
+    
     public int size() {
         return size;
     }
@@ -150,6 +160,11 @@ public class BinarySearchTreeSet<K extends Comparable<K>> {
             }
         }
         return result;
+    }
+    
+    @Override
+    public String toString() {
+    	return keys().toString();
     }
     
     private class Node {

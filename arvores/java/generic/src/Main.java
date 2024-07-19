@@ -1,6 +1,10 @@
+import generictree.GenericTree;
+import generictree.Position;
+
 public class Main {
 
 	public static void main(String[] args) {
+		
         GenericTree<String> myTree = new GenericTree<>();
 
         Position<String> root = myTree.add("Livro Azul", null);

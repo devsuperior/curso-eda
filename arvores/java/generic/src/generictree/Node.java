@@ -1,7 +1,9 @@
+package generictree;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class Node<T> implements Position<T> {
+class Node<T> implements Position<T> {
     private T element;
     private Node<T> parent;
     private List<Node<T>> children;

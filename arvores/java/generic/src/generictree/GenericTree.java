@@ -1,3 +1,5 @@
+package generictree;
+
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -20,7 +22,7 @@ public class GenericTree<T> {
         return size == 0;
     }
 
-    public Iterable<T> elementsDfs() {
+    public List<T> elementsDfs() {
         List<T> elements = new ArrayList<>();
         collectElements(elements, root);
         return elements;
@@ -35,7 +37,7 @@ public class GenericTree<T> {
         }
     }
 
-    public Iterable<T> elementsBfs() {
+    public List<T> elementsBfs() {
         List<T> elements = new ArrayList<>();
         if (root == null) {
             return elements;
@@ -56,7 +58,7 @@ public class GenericTree<T> {
         return elements;
     }
     
-    public Iterable<Position<T>> positions() {
+    public List<Position<T>> positions() {
         List<Position<T>> positions = new ArrayList<>();
         collectPositions(positions, root);
         return positions;
@@ -204,3 +206,4 @@ public class GenericTree<T> {
         return null;
     }
 }
+

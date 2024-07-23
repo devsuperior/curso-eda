@@ -5,21 +5,20 @@ import java.util.Collection;
 import java.util.List;
 
 public class BinarySearchTreeSet<K extends Comparable<K>> {
-	
-    private final Node SENTINEL = new Node(null);
+
     private int size;
     private Node root;
 
     public BinarySearchTreeSet() {
-    	size = 0;
-    	root = SENTINEL;
+        size = 0;
+        root = new Node(null, null);
     }
-    
+
     public BinarySearchTreeSet(Collection<K> c) {
-    	this();
-    	addAll(c);
+        this();
+        addAll(c);
     }
-    
+
     public int size() {
         return size;
     }
@@ -28,109 +27,121 @@ public class BinarySearchTreeSet<K extends Comparable<K>> {
         return size == 0;
     }
 
-    public void add(K key) {
-        root = add(root, key);
-    }
-
-    private Node add(Node node, K key) {
-        if (node == SENTINEL) {
-            size++;
-            return new Node(key);
+    public boolean remove(K key) {    	
+        if (key == null) {
+            throw new IllegalArgumentException("Key cannot be null");
         }
-        int cmp = key.compareTo(node.key);
-        if (cmp < 0) {
-            node.left = add(node.left, key);
-        } else if (cmp > 0) {
-            node.right = add(node.right, key);
+    	
+        Node nodeToRemove = findKeyLocation(root, key);
+        
+        if (nodeToRemove.isSentinel()) { // not found
+            return false; 
         }
-        return node;
-    }
 
-    public void addAll(Collection<K> c) {
-    	for (K item : c) {
-    		add(item);
-    	}
-    }
-    
-    public boolean contains(K key) {
-        return contains(root, key);
-    }
-
-    private boolean contains(Node node, K key) {
-        if (node == SENTINEL) {
-            return false;
+        // two children adjustment
+        if (!nodeToRemove.left.isSentinel() && !nodeToRemove.right.isSentinel()) {
+            Node successor = findMin(nodeToRemove.right);
+            nodeToRemove.key = successor.key;
+            nodeToRemove = successor; // nodeToRemove now has 0 or 1 child
         }
-        int cmp = key.compareTo(node.key);
-        if (cmp == 0) {
-            return true;
-        } else if (cmp < 0) {
-            return contains(node.left, key);
+
+        Node child = nodeToRemove.left.isSentinel() ? nodeToRemove.right : nodeToRemove.left;
+        child.parent = nodeToRemove.parent;
+        
+        if (nodeToRemove.parent == null) {
+            root = child;
+        } else if (nodeToRemove == nodeToRemove.parent.left) {
+            nodeToRemove.parent.left = child;
         } else {
-            return contains(node.right, key);
+            nodeToRemove.parent.right = child;
         }
+        
+        size--;
+        return true;
     }
 
-    public boolean remove(K key) {
-        if (contains(key)) {
-            root = remove(root, key);
-            size--;
-            return true;
-        }
-        return false;
-    }
-
-    private Node remove(Node node, K key) {
-        if (node == SENTINEL) {
-            return SENTINEL;
-        }
-        int cmp = key.compareTo(node.key);
-        if (cmp < 0) {
-            node.left = remove(node.left, key);
-        } else if (cmp > 0) {
-            node.right = remove(node.right, key);
-        } else {
-            if (node.left == SENTINEL) {
-                return node.right;
-            } else if (node.right == SENTINEL) {
-                return node.left;
-            }
-            Node t = node;
-            node = min(t.right);
-            node.right = deleteMin(t.right);
-            node.left = t.left;
-        }
-        return node;
-    }
-
-    private Node min(Node node) {
-        while (node.left != SENTINEL) {
+    private Node findMin(Node node) {
+        while (!node.left.isSentinel()) {
             node = node.left;
         }
         return node;
     }
+    
+    public void add(K key) {
+    	if (key == null) {
+    		throw new IllegalArgumentException("Key cannot be null");
+    	}
 
-    private Node deleteMin(Node node) {
-        if (node.left == SENTINEL) {
-            return node.right;
+        if (isEmpty()) {
+            root = new Node(key, null);
+            root.left = new Node(null, root);
+            root.right = new Node(null, root);
+            size++;
+            return;
         }
-        node.left = deleteMin(node.left);
+
+        Node node = findKeyLocation(root, key);
+        
+        if (node.isSentinel()) { // key not found
+            insertAtExternal(node, key);
+            size++;
+        }
+    }
+
+    private Node findKeyLocation(Node node, K key) {
+        while (!node.isSentinel()) {
+            int cmp = key.compareTo(node.key);
+            if (cmp == 0) {
+                return node;
+            } else if (cmp < 0) {
+            	node = node.left;
+            } else {
+            	node = node.right;
+            }
+        }
         return node;
+    }
+
+    private void insertAtExternal(Node sentinel, K key) {
+
+        Node parent = sentinel.parent;
+        Node newNode = new Node(key, parent);
+        
+        if (sentinel == parent.left) {
+            parent.left = newNode;
+        } else if (sentinel == parent.right) {
+            parent.right = newNode;
+        }
+
+        newNode.left = new Node(null, newNode);
+        newNode.right = new Node(null, newNode);
+    }
+    
+    public void addAll(Collection<K> c) {
+        for (K item : c) {
+            add(item);
+        }
+    }
+
+    public boolean contains(K key) {
+    	Node node = findKeyLocation(root, key);
+        return !node.isSentinel();
     }
 
     public List<K> keys() {
         List<K> keysList = new ArrayList<>();
-        inOrderTraversal(root, keysList);
+        collectKeys(root, keysList);
         return keysList;
     }
 
-    private void inOrderTraversal(Node node, List<K> keysList) {
-        if (node != SENTINEL) {
-            inOrderTraversal(node.left, keysList);
+    private void collectKeys(Node node, List<K> keysList) {
+        if (!node.isSentinel()) {
+        	collectKeys(node.left, keysList);
             keysList.add(node.key);
-            inOrderTraversal(node.right, keysList);
+            collectKeys(node.right, keysList);
         }
     }
-
+    
     public BinarySearchTreeSet<K> union(BinarySearchTreeSet<K> other) {
         BinarySearchTreeSet<K> result = new BinarySearchTreeSet<>();
         for (K key : this.keys()) {
@@ -164,16 +175,21 @@ public class BinarySearchTreeSet<K extends Comparable<K>> {
     
     @Override
     public String toString() {
-    	return keys().toString();
+        return keys().toString();
     }
-    
+
     private class Node {
         K key;
-        Node left, right;
+        Node left, right, parent;
 
-        Node(K key) {
+        Node(K key, Node parent) {
             this.key = key;
-            this.left = this.right = SENTINEL;
+            this.left = this.right = null;
+            this.parent = parent;
+        }
+        
+        boolean isSentinel() {
+        	return key == null;
         }
     }
 }

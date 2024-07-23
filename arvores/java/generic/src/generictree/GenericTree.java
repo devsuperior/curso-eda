@@ -1,9 +1,7 @@
 package generictree;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Queue;
 
 public class GenericTree<T> {
     private Node<T> root;
@@ -22,7 +20,7 @@ public class GenericTree<T> {
         return size == 0;
     }
 
-    public List<T> elementsDfs() {
+    public List<T> elements() {
         List<T> elements = new ArrayList<>();
         collectElements(elements, root);
         return elements;
@@ -37,27 +35,6 @@ public class GenericTree<T> {
         }
     }
 
-    public List<T> elementsBfs() {
-        List<T> elements = new ArrayList<>();
-        if (root == null) {
-            return elements;
-        }
-
-        Queue<Node<T>> queue = new LinkedList<>();
-        queue.add(root);
-
-        while (!queue.isEmpty()) {
-            Node<T> current = queue.poll(); 
-            elements.add(current.element());
-
-            for (Node<T> child : current.getChildren()) {
-                queue.add(child);
-            }
-        }
-
-        return elements;
-    }
-    
     public List<Position<T>> positions() {
         List<Position<T>> positions = new ArrayList<>();
         collectPositions(positions, root);
@@ -163,8 +140,7 @@ public class GenericTree<T> {
         }
     }
     
-    // DFS (Depth-First Search) to find an element
-    public Position<T> findDfs(T element) {
+    public Position<T> find(T element) {
         return findRecursively(root, element);
     }
 
@@ -183,27 +159,4 @@ public class GenericTree<T> {
         }
         return null;
     }
-    
-    // BFS (Breadth-First Search) to find an element
-    public Position<T> findBfs(T element) {
-        if (root == null) {
-            return null;
-        }
-
-        Queue<Node<T>> queue = new LinkedList<>();
-        queue.add(root);
-
-        while (!queue.isEmpty()) {
-            Node<T> current = queue.poll();
-
-            if (current.element().equals(element)) {
-                return current;
-            }
-
-            queue.addAll(current.getChildren());
-        }
-
-        return null;
-    }
 }
-

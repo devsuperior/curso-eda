@@ -4,134 +4,188 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BinarySearchTreeMap<K extends Comparable<K>, V> {
-    
-	private final Node SENTINEL = new Node(null, null);
-    
-	private Node root = SENTINEL;
+
     private int size;
+    private Node root;
 
-    public void put(K key, V value) {
-        root = put(root, key, value);
-    }
-
-    private Node put(Node node, K key, V value) {
-        if (node == SENTINEL) {
-            size++;
-            return new Node(key, value);
-        }
-
-        int cmp = key.compareTo(node.key);
-        if (cmp < 0) {
-            node.left = put(node.left, key, value);
-        } else if (cmp > 0) {
-            node.right = put(node.right, key, value);
-        } else {
-            node.value = value;
-        }
-        return node;
-    }
-
-    public V remove(K key) {
-        V value = get(key);
-        if (value != null) {
-            root = remove(root, key);
-        }
-        return value;
-    }
-
-    private Node remove(Node node, K key) {
-        if (node == SENTINEL) return SENTINEL;
-
-        int cmp = key.compareTo(node.key);
-        if (cmp < 0) {
-            node.left = remove(node.left, key);
-        } else if (cmp > 0) {
-            node.right = remove(node.right, key);
-        } else {
-            size--;
-            if (node.right == SENTINEL) return node.left;
-            if (node.left == SENTINEL) return node.right;
-
-            Node t = node;
-            node = min(t.right);
-            node.right = deleteMin(t.right);
-            node.left = t.left;
-        }
-        return node;
-    }
-
-    private Node min(Node node) {
-        while (node.left != SENTINEL) node = node.left;
-        return node;
-    }
-
-    private Node deleteMin(Node node) {
-        if (node.left == SENTINEL) return node.right;
-        node.left = deleteMin(node.left);
-        return node;
-    }
-
-    public V get(K key) {
-        return get(root, key);
-    }
-
-    private V get(Node node, K key) {
-        if (node == SENTINEL) {
-            return null;
-        }
-
-        int cmp = key.compareTo(node.key);
-        if (cmp < 0) {
-            return get(node.left, key);
-        } else if (cmp > 0) {
-            return get(node.right, key);
-        } else {
-            return node.value;
-        }
-    }
-
-    public boolean containsKey(K key) {
-        return get(key) != null;
-    }
-
-    public boolean isEmpty() {
-        return size == 0;
+    public BinarySearchTreeMap() {
+        size = 0;
+        root = new Node(null, null, null);
     }
 
     public int size() {
         return size;
     }
 
+    public boolean isEmpty() {
+        return size == 0;
+    }
+
+    public V get(K key) {
+        Node node = findKeyLocation(root, key);
+        return node.isSentinel() ? null : node.value;
+    }
+
+    public V remove(K key) {
+        if (key == null) {
+            throw new IllegalArgumentException("Key cannot be null");
+        }
+
+        Node nodeToRemove = findKeyLocation(root, key);
+        
+        if (nodeToRemove.isSentinel()) {
+            return null; 
+        }
+
+        V removedValue = nodeToRemove.value;
+        
+        if (!nodeToRemove.left.isSentinel() && !nodeToRemove.right.isSentinel()) {
+            Node successor = findMin(nodeToRemove.right);
+            nodeToRemove.key = successor.key;
+            nodeToRemove.value = successor.value;
+            nodeToRemove = successor;
+        }
+
+        Node child = nodeToRemove.left.isSentinel() ? nodeToRemove.right : nodeToRemove.left;
+        child.parent = nodeToRemove.parent;
+        
+        if (nodeToRemove.parent == null) {
+            root = child;
+        } else if (nodeToRemove == nodeToRemove.parent.left) {
+            nodeToRemove.parent.left = child;
+        } else {
+            nodeToRemove.parent.right = child;
+        }
+        
+        size--;
+        return removedValue;
+    }
+
+    public void put(K key, V value) {
+        if (key == null) {
+            throw new IllegalArgumentException("Key cannot be null");
+        }
+
+        if (isEmpty()) {
+            root = new Node(key, value, null);
+            root.left = new Node(null, null, root);
+            root.right = new Node(null, null, root);
+            size++;
+            return;
+        }
+
+        Node node = findKeyLocation(root, key);
+        
+        if (node.isSentinel()) {
+            insertAtExternal(node, key, value);
+            size++;
+        } else {
+            node.value = value; // Update the value if key already exists
+        }
+    }
+
+    public boolean containsKey(K key) {
+    	Node node = findKeyLocation(root, key);
+        return !node.isSentinel();
+    }
+
     public List<K> keys() {
-        List<K> keys = new ArrayList<>();
-        inorder(root, keys, true);
-        return keys;
+        List<K> keysList = new ArrayList<>();
+        collectKeys(root, keysList);
+        return keysList;
     }
 
     public List<V> values() {
-        List<V> values = new ArrayList<>();
-        inorder(root, values, false);
-        return values;
+        List<V> valuesList = new ArrayList<>();
+        collectValues(root, valuesList);
+        return valuesList;
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
-	private void inorder(Node node, List list, boolean keys) {
-        if (node != SENTINEL) {
-            inorder(node.left, list, keys);
-            list.add(keys ? node.key : node.value);
-            inorder(node.right, list, keys);
+    private Node findKeyLocation(Node node, K key) {
+        while (!node.isSentinel()) {
+            int cmp = key.compareTo(node.key);
+            if (cmp == 0) { // key found
+                return node;
+            } else if (cmp < 0) {
+                node = node.left;
+            } else {
+                node = node.right;
+            }
+        }
+        return node;
+    }
+
+    private void insertAtExternal(Node sentinel, K key, V value) {
+        Node parent = sentinel.parent;
+        Node newNode = new Node(key, value, parent);
+        
+        if (sentinel == parent.left) {
+            parent.left = newNode;
+        } else if (sentinel == parent.right) {
+            parent.right = newNode;
+        }
+
+        newNode.left = new Node(null, null, newNode);
+        newNode.right = new Node(null, null, newNode);
+    }
+
+    private void collectKeys(Node node, List<K> keysList) {
+        if (!node.isSentinel()) {
+            collectKeys(node.left, keysList);
+            keysList.add(node.key);
+            collectKeys(node.right, keysList);
         }
     }
-    
+
+    private void collectValues(Node node, List<V> valuesList) {
+        if (!node.isSentinel()) {
+            collectValues(node.left, valuesList);
+            valuesList.add(node.value);
+            collectValues(node.right, valuesList);
+        }
+    }
+
+    private Node findMin(Node node) {
+        while (!node.left.isSentinel()) {
+            node = node.left;
+        }
+        return node;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("[");
+        toStringHelper(root, sb);
+        sb.append("]");
+        return sb.toString();
+    }
+
+    private void toStringHelper(Node node, StringBuilder sb) {
+        if (!node.isSentinel()) {
+            toStringHelper(node.left, sb);
+            if (sb.length() > 1) {
+                sb.append(", ");
+            }
+            sb.append("{").append(node.key).append(": ").append(node.value).append("}");
+            toStringHelper(node.right, sb);
+        }
+    }
+
     private class Node {
         K key;
         V value;
-        Node left, right;
+        Node left, right, parent;
 
-        Node(K key, V value) {
+        Node(K key, V value, Node parent) {
             this.key = key;
             this.value = value;
-            this.left = this.right = SENTINEL;
+            this.left = this.right = null;
+            this.parent = parent;
+        }
+        
+        boolean isSentinel() {
+            return key == null;
         }
     }
 }

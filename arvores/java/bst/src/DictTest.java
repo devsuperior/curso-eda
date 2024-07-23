@@ -9,7 +9,7 @@ public class DictTest {
 		cookies.put("email", "ana@gmail.com");
 		cookies.put("email", "maria@gmail.com");
 		cookies.put("last-login", "2024-07-04T21:42:40.353283800Z");
-
+		
 		System.out.println("Values:");
 		for (String value : cookies.values()) {
 			System.out.println(value);
@@ -19,6 +19,9 @@ public class DictTest {
 		for (String key : cookies.keys()) {
 			System.out.println(key + ": " + cookies.get(key));
 		}
+		
+		System.out.println("\ntoString:");
+		System.out.println(cookies);
 		
 		System.out.println("\nIs empty: " + cookies.isEmpty());
 		System.out.println("Size: " + cookies.size());

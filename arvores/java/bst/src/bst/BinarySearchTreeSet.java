@@ -83,7 +83,18 @@ public class BinarySearchTreeSet<K extends Comparable<K>> {
         Node node = findKeyLocation(root, key);
         
         if (node.isSentinel()) { // key not found
-            insertAtExternal(node, key);
+
+        	Node parent = node.parent;
+        	Node newNode = new Node(key, parent);
+            newNode.left = new Node(null, newNode);
+            newNode.right = new Node(null, newNode);
+
+        	if (node == parent.left) {
+                parent.left = newNode;
+            } else if (node == parent.right) {
+                parent.right = newNode;
+            }
+        	
             size++;
         }
     }
@@ -102,21 +113,6 @@ public class BinarySearchTreeSet<K extends Comparable<K>> {
         return node;
     }
 
-    private void insertAtExternal(Node sentinel, K key) {
-
-        Node parent = sentinel.parent;
-        Node newNode = new Node(key, parent);
-        
-        if (sentinel == parent.left) {
-            parent.left = newNode;
-        } else if (sentinel == parent.right) {
-            parent.right = newNode;
-        }
-
-        newNode.left = new Node(null, newNode);
-        newNode.right = new Node(null, newNode);
-    }
-    
     public void addAll(Collection<K> c) {
         for (K item : c) {
             add(item);
@@ -178,6 +174,22 @@ public class BinarySearchTreeSet<K extends Comparable<K>> {
         return keys().toString();
     }
 
+    public String toStringFormat() {
+    	StringBuilder sb = new StringBuilder();
+    	toStringFormat(root, 0, sb);
+    	return sb.toString();
+    }
+    
+    private void toStringFormat(Node node, int depth, StringBuilder sb) {
+    	if (!node.isSentinel()) {
+        	toStringFormat(node.right, depth + 1, sb);    		
+        	String space = (depth > 0) ? "  ".repeat(depth - 1) + "--" : "";
+        	String parent = (depth > 0) ? node.parent.key.toString() : "";
+        	sb.append(space + "(" + node.key + ")" + parent + "\n");
+        	toStringFormat(node.left, depth + 1, sb);
+    	}
+    }
+    
     private class Node {
         K key;
         Node left, right, parent;

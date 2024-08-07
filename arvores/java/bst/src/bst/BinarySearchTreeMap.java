@@ -77,10 +77,22 @@ public class BinarySearchTreeMap<K extends Comparable<K>, V> {
         Node node = findKeyLocation(root, key);
         
         if (node.isSentinel()) {
-            insertAtExternal(node, key, value);
+        	
+        	Node parent = node.parent;
+        	Node newNode = new Node(key, value, parent);
+            newNode.left = new Node(null, null, newNode);
+            newNode.right = new Node(null, null, newNode);
+
+        	if (node == parent.left) {
+                parent.left = newNode;
+            } else if (node == parent.right) {
+                parent.right = newNode;
+            }
+        	
             size++;
-        } else {
-            node.value = value; // Update the value if key already exists
+        }
+        else {
+            node.value = value; // Update value if key already exists
         }
     }
 
@@ -115,20 +127,6 @@ public class BinarySearchTreeMap<K extends Comparable<K>, V> {
         return node;
     }
 
-    private void insertAtExternal(Node sentinel, K key, V value) {
-        Node parent = sentinel.parent;
-        Node newNode = new Node(key, value, parent);
-        
-        if (sentinel == parent.left) {
-            parent.left = newNode;
-        } else if (sentinel == parent.right) {
-            parent.right = newNode;
-        }
-
-        newNode.left = new Node(null, null, newNode);
-        newNode.right = new Node(null, null, newNode);
-    }
-
     private void collectKeys(Node node, List<K> keysList) {
         if (!node.isSentinel()) {
             collectKeys(node.left, keysList);
@@ -155,20 +153,20 @@ public class BinarySearchTreeMap<K extends Comparable<K>, V> {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("[");
+        sb.append("{");
         toStringHelper(root, sb);
-        sb.append("]");
+        sb.append("}");
         return sb.toString();
     }
 
     private void toStringHelper(Node node, StringBuilder sb) {
         if (!node.isSentinel()) {
-            toStringHelper(node.left, sb);
+            toStringHelper(node.right, sb);
             if (sb.length() > 1) {
                 sb.append(", ");
             }
-            sb.append("{").append(node.key).append(": ").append(node.value).append("}");
-            toStringHelper(node.right, sb);
+            sb.append("\"").append(node.key).append("\": \"").append(node.value).append("\"");
+            toStringHelper(node.left, sb);
         }
     }
 

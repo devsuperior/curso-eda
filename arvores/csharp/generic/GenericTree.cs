@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-
 namespace GenericTree
 {
     public class GenericTree<T>
@@ -18,7 +15,7 @@ namespace GenericTree
 
         public bool IsEmpty() => size == 0;
 
-        public List<T> ElementsDfs()
+        public List<T> Elements()
         {
             List<T> elements = new List<T>();
             CollectElements(elements, root);
@@ -35,31 +32,6 @@ namespace GenericTree
                     CollectElements(list, child);
                 }
             }
-        }
-
-        public List<T> ElementsBfs()
-        {
-            List<T> elements = new List<T>();
-            if (root == null)
-            {
-                return elements;
-            }
-
-            Queue<Node> queue = new Queue<Node>();
-            queue.Enqueue(root);
-
-            while (queue.Count > 0)
-            {
-                Node current = queue.Dequeue();
-                elements.Add(current.Element());
-
-                foreach (Node child in current.GetChildren())
-                {
-                    queue.Enqueue(child);
-                }
-            }
-
-            return elements;
         }
 
         public List<IPosition<T>> Positions()
@@ -81,28 +53,20 @@ namespace GenericTree
             }
         }
 
-        public void Replace(IPosition<T> position, T element)
+        public void Replace(IPosition<T>? position, T element)
         {
             Node node = Validate(position);
             node.SetElement(element);
         }
 
-        public IPosition<T> Root()
+        public IPosition<T>? Root()
         {
-            if (root == null)
-            {
-                throw new InvalidOperationException("The tree is empty");
-            }
             return root;
         }
 
         public IPosition<T>? Parent(IPosition<T> position)
         {
             Node node = Validate(position);
-            if (node == root)
-            {
-                throw new InvalidOperationException("The root has no parent");
-            }
             return node.GetParent();
         }
 
@@ -124,28 +88,32 @@ namespace GenericTree
             return node == root;
         }
 
-        private Node Validate(IPosition<T> position)
+        private Node Validate(IPosition<T>? position)
         {
             if (!(position is Node node))
                 throw new ArgumentException("Invalid position type");
 
-            if (node.GetParent() == node) // Convention to indicate 'deleted' or 'not part of the tree'
+            if (node.GetParent() == node) // Convention to indicate deleted
                 throw new ArgumentException("Position is no longer in the tree");
 
             return node;
         }
 
-        public IPosition<T> Add(T element, IPosition<T>? parentPos)
+        public IPosition<T> Add(T element, IPosition<T>? parent)
         {
-            Node? parent = parentPos == null ? null : Validate(parentPos);
-            Node newNode = new Node(element, parent);
-            if (parent == null)
+            if (!IsEmpty() && parent == null)
+            {
+                throw new ArgumentException("Parent position can't be null for a non empty tree");
+            }
+            Node? parentNode = parent == null ? null : Validate(parent);
+            Node newNode = new Node(element, parentNode);
+            if (parentNode == null)
             {
                 root = newNode;
             }
             else
             {
-                parent.AddChild(newNode);
+                parentNode.AddChild(newNode);
             }
             size++;
             return newNode;
@@ -172,12 +140,12 @@ namespace GenericTree
 
         private int SubtreeSize(Node node)
         {
-            int subtreeCount = 1;
+            int subtreeCount = 0;
             foreach (Node child in node.GetChildren())
             {
                 subtreeCount += SubtreeSize(child);
             }
-            return subtreeCount;
+            return 1 + subtreeCount;
         }
 
         private void MarkAsRemoved(Node node)
@@ -189,12 +157,12 @@ namespace GenericTree
             }
         }
 
-        public IPosition<T>? FindDfs(T element)
+        public IPosition<T>? Find(T element)
         {
-            return FindRecursively(root, element);
+            return FindRecursive(root, element);
         }
 
-        private IPosition<T>? FindRecursively(Node? node, T target)
+        private IPosition<T>? FindRecursive(Node? node, T target)
         {
             if (node == null)
             {
@@ -206,40 +174,12 @@ namespace GenericTree
             }
             foreach (Node child in node.GetChildren())
             {
-                IPosition<T>? found = FindRecursively(child, target);
+                IPosition<T>? found = FindRecursive(child, target);
                 if (found != null)
                 {
                     return found;
                 }
             }
-            return null;
-        }
-
-        public IPosition<T>? FindBfs(T element)
-        {
-            if (root == null)
-            {
-                return null;
-            }
-
-            Queue<Node> queue = new Queue<Node>();
-            queue.Enqueue(root);
-
-            while (queue.Count > 0)
-            {
-                Node current = queue.Dequeue();
-
-                if (element != null && element.Equals(current.Element()))
-                {
-                    return current;
-                }
-
-                foreach (Node child in current.GetChildren())
-                {
-                    queue.Enqueue(child);
-                }
-            }
-
             return null;
         }
 

@@ -1,189 +1,151 @@
 import Node from "./node.js";
 
 export default class GenericTree {
-  #root;
-  #size;
 
-  constructor() {
-    this.#root = null;
-    this.#size = 0;
-  }
+    #root;
+    #size;
 
-  size() {
-    return this.#size;
-  }
-
-  isEmpty() {
-    return this.#size === 0;
-  }
-
-  elementsDfs() {
-    const elements = [];
-    this.#collectElements(elements, this.#root);
-    return elements;
-  }
-
-  #collectElements(list, node) {
-    if (node) {
-      list.push(node.element());
-      node
-        ._getChildren()
-        .forEach((child) => this.#collectElements(list, child));
-    }
-  }
-
-  elementsBfs() {
-    const elements = [];
-    if (!this.#root) return elements;
-
-    const queue = [this.#root];
-    while (queue.length > 0) {
-      const current = queue.shift();
-      elements.push(current.element());
-      queue.push(...current._getChildren());
+    constructor() {
+        this.#root = null;
+        this.#size = 0;
     }
 
-    return elements;
-  }
-
-  positions() {
-    const positions = [];
-    this.#collectPositions(positions, this.#root);
-    return positions;
-  }
-
-  #collectPositions(list, node) {
-    if (node) {
-      list.push(node);
-      node
-        ._getChildren()
-        .forEach((child) => this.#collectPositions(list, child));
+    size() {
+        return this.#size;
     }
-  }
 
-  replace(position, element) {
-    const node = this.#validate(position);
-    node._setElement(element);
-  }
-
-  root() {
-    if (this.isEmpty()) {
-      throw new Error("The tree is empty");
+    isEmpty() {
+        return this.#size === 0;
     }
-    return this.#root;
-  }
 
-  parent(position) {
-    const node = this.#validate(position);
-    if (node === this.#root) {
-      throw new Error("The root has no parent");
+    elements() {
+        const list = [];
+        this.#collectElements(list, this.#root);
+        return list;
     }
-    return node._getParent();
-  }
 
-  children(position) {
-    const node = this.#validate(position);
-    return [...node._getChildren()];
-  }
-
-  isExternal(position) {
-    const node = this.#validate(position);
-    return node._isLeaf();
-  }
-
-  isRoot(position) {
-    const node = this.#validate(position);
-    return node === this.#root;
-  }
-
-  #validate(position) {
-    if (!(position instanceof Node)) {
-      throw new Error("Invalid position type");
+    #collectElements(list, node) {
+        list.push(node.element());
+        for (const child of node._getChildren()) {
+            this.#collectElements(list, child);
+        }
     }
-    if (position._getParent() === position) { // Convention to indicate 'deleted' or 'not part of the tree'
-      throw new Error("Node is no longer in the tree");
-    }
-    return position;
-  }
 
-  add(element, parentPos) {
-    if (!this.isEmpty() && !parentPos) {
-      throw new Error("Parent position can't be null for a non-empty tree");
+    positions() {
+        const list = [];
+        this.#collectPositions(list, this.#root);
+        return list;
     }
-    const parent = parentPos ? this.#validate(parentPos) : null;
-    const newNode = new Node(element, parent);
-    if (!parent) {
-      this.#root = newNode;
-    } else {
-      parent._addChild(newNode);
-    }
-    this.#size++;
-    return newNode;
-  }
 
-  remove(position) {
-    const node = this.#validate(position);
-    if (node === this.#root) {
-      this.#root = null;
-    } else {
-      const parent = node._getParent();
-      if (parent) {
-        parent._removeChild(node);
-      }
+    #collectPositions(list, node) {
+        list.push(node);
+        for (const child of node._getChildren()) {
+            this.#collectPositions(list, child);
+        }
     }
-    this.#size -= this.#subtreeSize(node);
-    this.#markAsRemoved(node);
-  }
 
-  #subtreeSize(node) {
-    return (
-      1 +
-      node
-        ._getChildren()
-        .reduce((acc, child) => acc + this.#subtreeSize(child), 0)
-    );
-  }
+    find(element) {
+        return this.#findRecursive(this.#root, element);
+    }
 
-  #markAsRemoved(node) {
-    node._setParent(node); // Convention to indicate 'deleted' or 'not part of the tree'
-    node._getChildren().forEach((child) => this.#markAsRemoved(child));
-  }
+    #findRecursive(node, target) {
+        if (!node) {
+            return null;
+        }
+        if (node.element() === target) {
+            return node;
+        }
+        for (const child of node._getChildren()) {
+            const found = this.#findRecursive(child, target);
+            if (found) {
+                return found;
+            }
+        }
+        return null;
+    }
 
-  // DFS to find an element
-  findDfs(element) {
-    return this.#findRecursively(this.#root, element);
-  }
+    #validate(position) {
+        if (!(position instanceof Node)) {
+            throw new Error("Invalid position type");
+        }
+        if (position._getParent() === position) {
+            throw new Error("Removed node");
+        }
+        return position;
+    }
 
-  #findRecursively(node, target) {
-    if (!node) {
-      return null;
+    add(element, parent) {
+        if (!this.isEmpty() && !parent) {
+            throw new Error("Parent position can't be null for a non-empty tree");
+        }
+        const parentNode = parent ? this.#validate(parent) : null;
+        const newNode = new Node(element, parentNode);
+        if (!parentNode) {
+            this.#root = newNode;
+        }
+        else {
+            parentNode._addChild(newNode);
+        }
+        this.#size++;
+        return newNode;
     }
-    if (node.element() === target) {
-      return node;
-    }
-    for (const child of node._getChildren()) {
-      const found = this.#findRecursively(child, target);
-      if (found) {
-        return found;
-      }
-    }
-    return null;
-  }
 
-  // BFS to find an element
-  findBfs(element) {
-    if (!this.#root) {
-      return null;
+    children(position) {
+        const node = this.#validate(position);
+        return [...node._getChildren()];
     }
-    const queue = [this.#root];
-    while (queue.length > 0) {
-      const current = queue.shift();
-      if (current.element() === element) {
-        return current;
-      }
-      queue.push(...current._getChildren());
+
+    root() {
+        return this.#root;
     }
-    return null;
-  }
+
+    isExternal(position) {
+        const node = this.#validate(position);
+        return node._isLeaf();
+    }
+
+    isRoot(position) {
+        const node = this.#validate(position);
+        return node === this.#root;
+    }
+
+    parent(position) {
+        const node = this.#validate(position);
+        return node._getParent();
+    }
+
+    replace(position, element) {
+        const node = this.#validate(position);
+        node._setElement(element);
+    }
+
+    remove(position) {
+        const node = this.#validate(position);
+        if (node === this.#root) {
+            this.#root = null;
+        }
+        else {
+            const parent = node._getParent();
+            if (parent) {
+                parent._removeChild(node);
+            }
+        }
+        this.#size -= this.#subtreeSize(node);
+        this.#markAsRemoved(node);
+    }
+
+    #markAsRemoved(node) {
+        node._setParent(node);
+        for (const child of node._getChildren()) {
+            this.#markAsRemoved(child);
+        }
+    }
+
+    #subtreeSize(node) {
+        let childrenSize = 0;
+        for (const child of node._getChildren()) {
+            childrenSize += this.#subtreeSize(child);
+        }
+        return 1 + childrenSize;
+    }
 }
-

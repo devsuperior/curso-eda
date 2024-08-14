@@ -1,6 +1,7 @@
 import GenericTree from "./generic-tree.js";
 
 const myTree = new GenericTree();
+
 const root = myTree.add("Livro Azul", null);
 
 const intro = myTree.add("Introdução", root);
@@ -20,50 +21,103 @@ myTree.add("Problema carros", cap2);
 myTree.add("Método recursivo", cap2Sec1);
 myTree.add("Método imperativo", cap2Sec1);
 
-console.log("Size = " + myTree.size());
-console.log("isEmpty = " + myTree.isEmpty());
+console.log("size: " + myTree.size());
+console.log("isEmpty: " + myTree.isEmpty());
 
-console.log("\nManual print:");
+const pos1 = myTree.find("Livro Azul");
+const pos2 = myTree.find("Capítulo 1");
+const pos3 = myTree.find("Aplicações");
+
+console.log("\nLivro Azul:");
+if (pos1) {
+    console.log("Encontrado");
+    console.log("isExternal: " + myTree.isExternal(pos1));
+    console.log("isRoot: " + myTree.isRoot(pos1));
+    const parent = myTree.parent(pos1);
+    if (parent != null) {
+        console.log("parent: " + parent.element());
+    }
+}
+else {
+    console.log("NÃO encontrado");
+}
+
+console.log("\nCapítulo 1:");
+if (pos2) {
+    console.log("Encontrado");
+    console.log("isExternal: " + myTree.isExternal(pos2));
+    console.log("isRoot: " + myTree.isRoot(pos2));
+    const parent = myTree.parent(pos2);
+    if (parent != null) {
+        console.log("parent: " + parent.element());
+    }
+}
+else {
+    console.log("NÃO encontrado");
+}
+
+console.log("\nAplicações:");
+if (pos3) {
+    console.log("Encontrado");
+    console.log("isExternal: " + myTree.isExternal(pos3));
+    console.log("isRoot: " + myTree.isRoot(pos3));
+    const parent = myTree.parent(pos3);
+    if (parent != null) {
+        console.log("parent: " + parent.element());
+    }
+}
+else {
+    console.log("NÃO encontrado");
+}
+
+const pos4 = myTree.find("Conceitos");
+myTree.replace(pos4, "Conceitos básicos");
+
+console.log("\nPRINT DFS PRE ORDER:");
 print(myTree);
 
-let pos1 = myTree.findBfs("Métodos");
-if (pos1) {
-  myTree.remove(pos1);
-  console.log("\nSize após remoção = " + myTree.size());
-  console.log("\nManual print:");
-  print(myTree);
+console.log("\nPRINT elements():");
+for (const elem of myTree.elements()) {
+    console.log(elem);
 }
 
-let pos2 = myTree.findBfs("Para quem é este livro");
-if (pos2) {
-  myTree.replace(pos2, "Público alvo");
-  console.log("\nManual print depois de replace:");
-  print(myTree);
+console.log("\nPRINT positions():");
+for (const pos of myTree.positions()) {
+    console.log(pos.element());
 }
 
-let pos3 = myTree.findBfs("Livro Azul");
-let pos4 = myTree.findBfs("Capítulo 1");
-let pos5 = myTree.findBfs("Aplicações");
+console.log("\nPRINT BFS:");
+printBfs(myTree);
 
-console.log("\nLivro Azul isExternal: " + myTree.isExternal(pos3));
-console.log("Livro Azul isRoot: " + myTree.isRoot(pos3));
-console.log("Capítulo 1 isExternal: " + myTree.isExternal(pos4));
-console.log("Capítulo 1 isRoot: " + myTree.isRoot(pos4));
-console.log("Aplicações isExternal: " + myTree.isExternal(pos5));
-console.log("Aplicações isRoot: " + myTree.isRoot(pos5));
-
-console.log("\nBFS:");
-myTree.elementsBfs().forEach((element) => console.log(element));
-
-console.log("\nDFS:");
-myTree.elementsDfs().forEach((element) => console.log(element));
+const pos5 = myTree.find("Métodos");
+if (pos5) {
+    myTree.remove(pos5);
+    console.log("\nPRINT remove:");
+    console.log("SIZE = " + myTree.size());
+    print(myTree);
+}
 
 function print(tree) {
-  printRecursive(tree, tree.root(), 0);
+    printRecursive(tree.root(), tree, 0);
 }
 
-function printRecursive(tree, pos, depth) {
-  const spaces = "   ".repeat(depth);
-  console.log(spaces + pos.element());
-  tree.children(pos).forEach((child) => printRecursive(tree, child, depth + 1));
+function printRecursive(position, tree, depth) {
+    const spaces = "    ".repeat(depth);
+    console.log(spaces + position.element());
+    for (const child of tree.children(position)) {
+        printRecursive(child, tree, depth + 1);
+    }    
+}
+
+function printBfs(tree) {
+    if (tree.isEmpty()) {
+        return;
+    }
+    const queue = [];
+    queue.push(tree.root());
+    while (queue.length > 0) {
+        const position = queue.shift();
+        console.log(position.element());
+        queue.push(...tree.children(position));
+    }
 }

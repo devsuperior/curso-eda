@@ -32,99 +32,99 @@ public class Main {
 		System.out.println("Size = " + myTree.size());
 		System.out.println("isEmpty = " + myTree.isEmpty());
 
-		Position<String> pos3 = myTree.find("Livro Azul");
-		Position<String> pos4 = myTree.find("Capítulo 1");
-		Position<String> pos5 = myTree.find("Aplicações");
-
-		System.out.println("\nLivro Azul isExternal: " + myTree.isExternal(pos3));
-		System.out.println("Livro Azul isRoot: " + myTree.isRoot(pos3));
-		System.out.println("Capítulo 1 isExternal: " + myTree.isExternal(pos4));
-		System.out.println("Capítulo 1 isRoot: " + myTree.isRoot(pos4));
-		System.out.println("Aplicações isExternal: " + myTree.isExternal(pos5));
-		System.out.println("Aplicações isRoot: " + myTree.isRoot(pos5));
-
-		System.out.println("\nElements:");
-		for (String element : myTree.elements()) {
-			System.out.println(element);
+		Position<String> pos1 = myTree.find("Livro Azul");
+		Position<String> pos2 = myTree.find("Capítulo 1");
+		Position<String> pos3 = myTree.find("Aplicações");
+		
+		System.out.println("\nLivro Azul:");
+		if (pos1 != null) {
+		    System.out.println("Encontrado");
+		    System.out.println("isExternal: " + myTree.isExternal(pos1));
+		    System.out.println("isRoot: " + myTree.isRoot(pos1));
+		    Position<String> parent = myTree.parent(pos1);
+		    if (parent != null) {
+		        System.out.println("parent: " + parent.element());
+		    }
+		} else {
+		    System.out.println("NÃO encontrado");
 		}
 
-		System.out.println("\nPrint preOrder:");
-		printPreOrder(myTree);
+		System.out.println("\nCapítulo 1:");
+		if (pos2 != null) {
+		    System.out.println("Encontrado");
+		    System.out.println("isExternal: " + myTree.isExternal(pos2));
+		    System.out.println("isRoot: " + myTree.isRoot(pos2));
+		    Position<String> parent = myTree.parent(pos2);
+		    if (parent != null) {
+		        System.out.println("parent: " + parent.element());
+		    }
+		} else {
+		    System.out.println("NÃO encontrado");
+		}
 
-		System.out.println("\nPrint postOrder:");
-		printPostOrder(myTree);
+		System.out.println("\nAplicações:");
+		if (pos3 != null) {
+		    System.out.println("Encontrado");
+		    System.out.println("isExternal: " + myTree.isExternal(pos3));
+		    System.out.println("isRoot: " + myTree.isRoot(pos3));
+		    Position<String> parent = myTree.parent(pos3);
+		    if (parent != null) {
+		        System.out.println("parent: " + parent.element());
+		    }
+		} else {
+		    System.out.println("NÃO encontrado");
+		}
 
-		System.out.println("\nPrint BFS:");
+		Position<String> pos4 = myTree.find("Conceitos");
+		myTree.replace(pos4, "Conceitos básicos");
+
+		System.out.println("\nPRINT DFS PRE ORDER:");
+		print(myTree);
+
+		System.out.println("\nPRINT elements():");
+		for (String elem : myTree.elements()) {
+		    System.out.println(elem);
+		}
+
+		System.out.println("\nPRINT positions():");
+		for (Position<String> pos : myTree.positions()) {
+		    System.out.println(pos.element());
+		}
+
+		System.out.println("\nPRINT BFS:");
 		printBfs(myTree);
 
-		Position<String> pos1 = myTree.find("Métodos");
-		if (pos1 != null) {
-			myTree.remove(pos1);
-		}
-
-		Position<String> pos2 = myTree.find("Para quem é este livro");
-		if (pos2 != null) {
-			myTree.replace(pos2, "Público alvo");
-		}
-
-		System.out.println("\nRemove + replace:");
-		printPreOrder(myTree);
-	}
-
-	public static <T> void printPreOrder(GenericTree<T> tree) {
-		printPreOrderRecursive(tree, tree.root(), 0);
-	}
-
-	public static <T> void printPreOrderRecursive(GenericTree<T> tree, Position<T> pos, int depth) {
-		String spaces = "   ".repeat(depth);
-		System.out.println(spaces + pos.element());
-		for (Position<T> child : tree.children(pos)) {
-			printPreOrderRecursive(tree, child, depth + 1);
+		Position<String> pos5 = myTree.find("Métodos");
+		if (pos5 != null) {
+		    myTree.remove(pos5);
+		    System.out.println("\nPRINT remove:");
+		    System.out.println("SIZE = " + myTree.size());
+		    print(myTree);
 		}
 	}
-
-	public static <T> void printPostOrder(GenericTree<T> tree) {
-		printPostOrderRecursive(tree, tree.root(), 0);
+	
+	public static <T> void print(GenericTree<T> tree) {
+	    printRecursive(tree.root(), tree, 0);
 	}
 
-	public static <T> void printPostOrderRecursive(GenericTree<T> tree, Position<T> pos, int depth) {
-		for (Position<T> child : tree.children(pos)) {
-			printPostOrderRecursive(tree, child, depth + 1);
-		}
-		String spaces = "   ".repeat(depth);
-		System.out.println(spaces + pos.element());
+	public static <T> void printRecursive(Position<T> position, GenericTree<T> tree, int depth) {
+	    String spaces = "    ".repeat(depth);
+	    System.out.println(spaces + position.element());
+	    for (Position<T> child : tree.children(position)) {
+	        printRecursive(child, tree, depth + 1);
+	    }
 	}
 
 	public static <T> void printBfs(GenericTree<T> tree) {
-		if (tree.isEmpty()) {
-			return;
-		}
-
-		Position<T> root = tree.root();
-
-		Queue<Elem<T>> queue = new LinkedList<>();
-		queue.add(new Elem<>(root, 0));
-
-		while (!queue.isEmpty()) {
-			
-			Elem<T> elem = queue.poll();
-			
-			String spaces = "   ".repeat(elem.depth);
-			System.out.println(spaces + elem.position.element());
-			
-			for (Position<T> child : tree.children(elem.position)) {
-				queue.add(new Elem<>(child, elem.depth + 1));
-			}
-		}
-	}
-}
-
-class Elem<T> {
-	Position<T> position;
-	int depth;
-
-	Elem(Position<T> position, int depth) {
-		this.position = position;
-		this.depth = depth;
+	    if (tree.isEmpty()) {
+	        return;
+	    }
+	    Queue<Position<T>> queue = new LinkedList<>();
+	    queue.add(tree.root());
+	    while (!queue.isEmpty()) {
+	    	Position<T> position = queue.poll();
+	        System.out.println(position.element());
+	        queue.addAll(tree.children(position));
+	    }
 	}
 }

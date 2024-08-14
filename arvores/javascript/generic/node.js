@@ -1,45 +1,46 @@
 export default class Node {
-  #element;
-  #parent;
-  #children;
 
-  constructor(element, parent = null) {
-    this.#element = element;
-    this.#parent = parent;
-    this.#children = [];
-  }
+    #element;
+    #parent;
+    #children;
 
-  element() {
-    return this.#element;
-  }
+    constructor(element, parent = null) {
+        this.#element = element;
+        this.#parent = parent;
+        this.#children = [];
+    }
 
-  _setElement(element) {
-    this.#element = element;
-  }
+    element() {
+        return this.#element;
+    }
 
-  _getParent() {
-    return this.#parent;
-  }
+    _setElement(element) {
+        this.#element = element;
+    }
 
-  _setParent(parent) {
-    this.#parent = parent;
-  }
+    _getParent() {
+        return this.#parent;
+    }
 
-  _getChildren() {
-    return this.#children;
-  }
+    _setParent(parent) {
+        this.#parent = parent;
+    }
 
-  _addChild(child) {
-    this.#children.push(child);
-    child._setParent(this);
-  }
+    _getChildren() {
+        return this.#children;
+    }
 
-  _removeChild(child) {
-    this.#children = this.#children.filter((c) => c !== child);
-    child._setParent(null);
-  }
+    _addChild(child) {
+        this.#children.push(child);
+        child._setParent(this);
+    }
 
-  _isLeaf() {
-    return this.#children.length === 0;
-  }
+    _removeChild(child) {
+        this.#children = this.#children.filter(c => c !== child);
+        child._setParent(null);
+    }
+
+    _isLeaf() {
+        return this.#children.length === 0;
+    }
 }

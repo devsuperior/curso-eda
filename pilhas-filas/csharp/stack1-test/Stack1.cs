@@ -55,4 +55,9 @@ public class Stack1<T>
             return this.top + 1;
         }
     }
+    
+    public void Clear()
+    {
+        this.top = -1;
+    }
 }

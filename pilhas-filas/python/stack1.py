@@ -30,3 +30,6 @@ class Stack1:
 
     def count(self):
         return self.top + 1
+
+    def clear(self):
+        self.top = -1

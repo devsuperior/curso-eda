@@ -40,4 +40,8 @@ export default class Stack1 {
     count() {
         return this.top + 1;
     }
+
+    clear() {
+        this.top = -1;
+    }
 }

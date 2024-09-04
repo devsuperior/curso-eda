@@ -33,4 +33,8 @@ public class Stack2<T> {
     public int count() {
         return this.list.size();
     }
+    
+    public void clear() {
+        this.list = new ArrayList<>();
+    }
 }

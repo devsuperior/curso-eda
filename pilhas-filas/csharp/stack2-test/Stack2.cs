@@ -47,4 +47,9 @@ public class Stack2<T>
             return this.list.Count;
         }
     }
+
+    public void Clear()
+    {
+        this.list = new List<T>();
+    }
 }

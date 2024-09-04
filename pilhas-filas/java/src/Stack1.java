@@ -46,4 +46,8 @@ public class Stack1<T> {
     public int count() {
         return this.top + 1;
     }
+    
+    public void clear() {
+    	this.top = -1;
+    }
 }

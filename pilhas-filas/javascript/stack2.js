@@ -28,4 +28,8 @@ export default class Stack2 {
     count() {
         return this.list.length;
     }
+
+    clear() {
+        this.list = [];
+    }
 }

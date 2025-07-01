@@ -1,6 +1,11 @@
-const knapsack = function(i, w, weights, values) {
+function knapsack(i, w, weights, values) {
+    let memo = Array.from( { length: n + 1}, () => Array(W + 1).fill(-1));
+    return knapsackAux(i, w, weights, values, memo);
+}
+
+function knapsackAux(i, w, weights, values, memo) {
     // Caso base: se não temos itens sobrando ou capacidade é 0, retorne 0
-    if(i == 0 || w == 0) {
+    if (i == 0 || w == 0) {
         return 0;
     }
 
@@ -10,17 +15,17 @@ const knapsack = function(i, w, weights, values) {
     }
 
     // Se incluir o próximo item exceder a capacidade, pular ele
-    if(weights[i - 1] > w){   
-        return knapsack(i - 1, w, weights, values);
-    }
-
+    if (weights[i - 1] > w){   
+        memo[i][w] = knapsackAux(i - 1, w, weights, values, memo);
+    } 
     // Caso contrário, explorar dois casos: incluir o n-ésimo item ou excluir ele
     else {
-        let incluir_item = values[i - 1] + knapsack(i - 1, w - weights[i - 1], weights, values);
-        let excluir_item = knapsack(i - 1, w, weights, values);
-
-        return Math.max(incluir_item, excluir_item);
+        let itemIn = values[i - 1] + knapsackAux(i - 1, w - weights[i - 1], weights, values, memo);
+        let itemOut = knapsackAux(i - 1, w, weights, values, memo);
+        memo[i][w] = Math.max(itemIn, itemOut);
     }
+
+    return memo[i][w];
 }
 
 // Exemplo de uso
@@ -29,7 +34,4 @@ let values = [6, 10, 12]
 let W = 5;
 let n = 3;
 
-// Matriz de memorização com -1
-let memo = Array.from( { length: n + 1}, () => Array(W + 1).fill(-1));
-
-console.log(knapsack(n, W, weights, values, memo));
+console.log(knapsack(n, W, weights, values));

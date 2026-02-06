@@ -36,7 +36,7 @@ Dados dois arrays, calcule o seu produto escalar.
 
     ```bash
     entrada: nums1 = [0,1,0,0,0], nums2 = [0,1,0,0,0]
-    saída: 0
+    saída: 1
     ```
 
 * Exemplo 3:
